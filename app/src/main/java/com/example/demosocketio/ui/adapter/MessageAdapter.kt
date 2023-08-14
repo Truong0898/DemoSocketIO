@@ -10,8 +10,7 @@ import com.example.demosocketio.databinding.ItemSendMessageBinding
 import com.example.demosocketio.ui.MyConst
 import com.example.demosocketio.ui.data.ModelMessage
 
-class MessageAdapter(var lsMess: List<ModelMessage>) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MessageAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private lateinit var bindingR: ItemReceivedMessageBinding
     private lateinit var bindingS: ItemSendMessageBinding
     private val differCallBack = object : DiffUtil.ItemCallback<ModelMessage>() {
@@ -26,10 +25,8 @@ class MessageAdapter(var lsMess: List<ModelMessage>) :
 
     private val differ = AsyncListDiffer(this, differCallBack)
 
-    fun submidChat(modelMessage: MutableList<ModelMessage>) {
-        val lsMessage = differ.currentList
-        lsMessage.add(modelMessage)
-        differ.submitList(lsMessage)
+    fun submidChat(modelMessage: List<ModelMessage>) {
+        differ.submitList(modelMessage)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -66,6 +63,4 @@ class MessageAdapter(var lsMess: List<ModelMessage>) :
             (holder as ReceivedHolder).bind(chat)
         }
     }
-
-
 }

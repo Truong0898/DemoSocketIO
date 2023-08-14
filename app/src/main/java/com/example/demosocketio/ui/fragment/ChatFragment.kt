@@ -1,6 +1,7 @@
 package com.example.demosocketio.ui.fragment
 
 import android.app.Fragment
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,9 +24,13 @@ class ChatFragment : Fragment(), OnClickListener{
     private lateinit var bindingL: LoginFragmentBinding
     private lateinit var messageAdapter: MessageAdapter
     private lateinit var rcvChat: RecyclerView
+    private lateinit var context : Context
     private var lsMessage = mutableListOf<ModelMessage>()
     private var userName = ""
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater?,
@@ -40,12 +45,10 @@ class ChatFragment : Fragment(), OnClickListener{
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-
         rcvChat = binding.rcvChat
-        val linearLayoutManager = LinearLayoutManager(this)
+        val linearLayoutManager = LinearLayoutManager(context)
         rcvChat.layoutManager = linearLayoutManager
         rcvChat.adapter = messageAdapter
-
 
     }
 
@@ -73,6 +76,12 @@ class ChatFragment : Fragment(), OnClickListener{
         super.onDestroy()
         socketHandler.disconnectSocket()
     }
+
+
+    companion object{
+        const val USERNAME = "username"
+    }
+
 }
 
 
