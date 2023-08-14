@@ -1,14 +1,11 @@
 package com.example.demosocketio.ui.data
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.demosocketio.ui.Const
 import com.github.nkzawa.socketio.client.IO
 import com.github.nkzawa.socketio.client.Socket
 import com.google.gson.Gson
 import java.net.URISyntaxException
-import kotlin.math.log
 
 
 class SocketHandler( ) {

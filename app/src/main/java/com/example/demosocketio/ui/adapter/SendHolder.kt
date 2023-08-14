@@ -1,7 +1,6 @@
 package com.example.demosocketio.ui.adapter
 
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.demosocketio.databinding.ItemSendMessageBinding
 import com.example.demosocketio.ui.data.ModelMessage
 
