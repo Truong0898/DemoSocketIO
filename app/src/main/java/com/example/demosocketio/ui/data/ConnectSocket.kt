@@ -10,9 +10,10 @@ import com.google.gson.Gson
 import java.net.URISyntaxException
 import kotlin.math.log
 
-private  var _onNewChat = MutableLiveData<ModelMessage> ()
-val onNewChat: LiveData<ModelMessage> get() = _onNewChat
+
 class SocketHandler( ) {
+    private  var _onNewChat = MutableLiveData<ModelMessage> ()
+    val onNewChat: LiveData<ModelMessage> get() = _onNewChat
     private var socket: Socket? = null
 
     init {

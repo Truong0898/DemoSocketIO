@@ -28,28 +28,11 @@ class MainActivity : ComponentActivity(), OnClickListener {
         setContentView(binding.root)
 
         socketHandler = SocketHandler()
-        rcvChat = bindingC.rcvChat
-        val linearLayoutManager = LinearLayoutManager(this)
-        rcvChat.layoutManager = linearLayoutManager
-        rcvChat.adapter = messageAdapter
 
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.btnSend -> {
-                val message = bindingC.edtMessage.text.toString()
-                if (message.isNotEmpty()) {
-                    val name = binding.edtName.text.toString()
-                    val message = bindingC.edtMessage.text.toString()
-                    if (message.isNotEmpty()) {
-                        val modelMessage = ModelMessage()
-                        modelMessage.name = name
-                        modelMessage.message = message
-                        socketHandler.emiChat(modelMessage)
-                    }
-                }
-            }
 
             R.id.btnJoin -> {
                 if (binding.edtName.text.isNotEmpty())
@@ -60,5 +43,6 @@ class MainActivity : ComponentActivity(), OnClickListener {
         }
 
     }
+
 }
 

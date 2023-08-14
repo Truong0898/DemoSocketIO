@@ -26,7 +26,7 @@ class MessageAdapter(var lsMess: List<ModelMessage>) :
 
     private val differ = AsyncListDiffer(this, differCallBack)
 
-    fun submidChat(modelMessage: ModelMessage) {
+    fun submidChat(modelMessage: MutableList<ModelMessage>) {
         val lsMessage = differ.currentList
         lsMessage.add(modelMessage)
         differ.submitList(lsMessage)
