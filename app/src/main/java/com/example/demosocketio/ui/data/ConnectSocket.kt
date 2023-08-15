@@ -2,62 +2,59 @@ package com.example.demosocketio.ui.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.github.nkzawa.socketio.client.IO
-import com.github.nkzawa.socketio.client.Socket
-import com.google.gson.Gson
-import java.net.URISyntaxException
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import okhttp3.WebSocket
+import okhttp3.WebSocketListener
 
 
-class SocketHandler( ) {
+class ConnectWebSocket{
+    private lateinit var webSocket: WebSocket
     private  var _onNewChat = MutableLiveData<ModelMessage> ()
     val onNewChat: LiveData<ModelMessage> get() = _onNewChat
-    private var socket: Socket? = null
+    fun connectWebSocket() {
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url("wss://socketsbay.com/wss/v2/1/demo/")
+            .build()
 
-    init {
-        try {
-            socket = IO.socket(SOCKET_URL)
-            socket?.connect()
-
-            registerOnNewChat()
-        } catch (e: URISyntaxException) {
-            e.printStackTrace()
-        }
-    }
-
-    private fun registerOnNewChat() {
-        socket?.on(CHAT_KEY.NEW_MESSAGE) { args ->
-            args.let { d->
-                if (d.toString().isNotEmpty()) {
-                    val modelMessage = Gson().fromJson(d.toString(),ModelMessage::class.java)
-                    _onNewChat.postValue(modelMessage)
-                }
+        webSocket = client.newWebSocket(request, object : WebSocketListener() {
+            override fun onOpen(webSocket: WebSocket, response: Response) {
+                super.onOpen(webSocket, response)
+                println("WebSocket connection opened")
             }
 
-        }
+            override fun onMessage(webSocket: WebSocket, text: String) {
+                super.onMessage(webSocket, text)
+                val modelMessage = ModelMessage()
+                modelMessage.name = "Server"
+                modelMessage.message = text
+                modelMessage.isSend = false
+                _onNewChat.postValue(modelMessage)
+                println("Received message: $text")
+            }
+
+            override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
+                super.onClosed(webSocket, code, reason)
+                println("WebSocket connection closed")
+            }
+
+            override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
+                super.onFailure(webSocket, t, response)
+                println("WebSocket connection failed: ${t.message}")
+            }
+        })
     }
 
 
-    fun emiChat(modelMessage: ModelMessage) {
-        val jsonStr = Gson().toJson(modelMessage,ModelMessage::class.java)
-        socket?.emit(CHAT_KEY.NEW_MESSAGE,jsonStr)
+    fun sendMessage(message: String) {
+        webSocket.send(message)
     }
 
-    private object CHAT_KEY {
-        const val NEW_MESSAGE = "new_message"
+    fun closeWebSocket() {
+        webSocket.close(1000, "Closing WebSocket connection")
     }
 
-    fun disconnectSocket(): Socket? {
-        socket?.disconnect()
-        socket?.off()
-        return TODO()
-    }
-
-
-
-
-    companion object {
-        const val SOCKET_URL = "wss://free.blr2.piesocket.com/v3/1?api_key=JCEeji6M0LFgXwNzsnFLvqaBLZ40NGcNKUAj30yc&notify_self=1"
-    }
 }
-
 

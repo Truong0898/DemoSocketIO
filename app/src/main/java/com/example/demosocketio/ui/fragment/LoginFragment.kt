@@ -4,11 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
-import android.view.View.inflate
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import com.example.demosocketio.R
 import com.example.demosocketio.databinding.LoginFragmentBinding
 
@@ -28,11 +26,10 @@ class LoginFragment : Fragment(), OnClickListener {
 
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         btnJoin = binding.btnJoin
         btnJoin.setOnClickListener(this)
-
     }
 
 
@@ -40,10 +37,12 @@ class LoginFragment : Fragment(), OnClickListener {
         when (v?.id) {
             R.id.btnJoin -> {
                 val bundle = Bundle()
-                bundle.putString("user_name",binding.edtName.toString())
+                bundle.putString("user_name",binding.edtName.text.toString())
                 if (binding.edtName.text.isNotEmpty()) {
+                    val chatFragment = ChatFragment()
+                    chatFragment.arguments = bundle
                     var chatfragment = fragmentManager?.beginTransaction()
-                    chatfragment?.replace(R.id.chatFragment, ChatFragment())
+                    chatfragment?.replace(R.id.flFragment, chatFragment)
                     chatfragment?.commit()
                 }
 

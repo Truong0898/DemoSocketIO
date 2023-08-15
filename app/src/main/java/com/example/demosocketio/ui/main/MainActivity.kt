@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.add(R.id.loginFragment, LoginFragment())
+        fragmentTransaction.add(R.id.flFragment, LoginFragment())
         fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
     }
